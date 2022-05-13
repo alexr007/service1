@@ -2,6 +2,7 @@ package service1;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ public class AppController {
 
   private final RestTemplate rest;
   private final MessageRepository repo;
+  private final KafkaTemplate<String, String> kafka;
 
   @GetMapping("/")
   public Greeting handle(@RequestParam(name = "name", defaultValue = "Alex") String name) {
@@ -29,6 +31,11 @@ public class AppController {
     Message message = new Message();
     message.setContents(contents);
     repo.save(message);
+  }
+
+  @GetMapping("k")
+  public void kafka(@RequestParam(name = "k") String key, @RequestParam(name = "v") String value) {
+    kafka.send("in", key, value);
   }
 
 }
