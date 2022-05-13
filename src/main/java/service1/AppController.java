@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 public class AppController {
 
   private final RestTemplate rest;
+  private final MessageRepository repo;
 
   @GetMapping("/")
   public Greeting handle(@RequestParam(name = "name", defaultValue = "Alex") String name) {
@@ -21,6 +22,13 @@ public class AppController {
     Greeting greeting = new Greeting(result.getMessage().toUpperCase());
     log.info("modified: {}", greeting);
     return greeting;
+  }
+
+  @GetMapping("w")
+  public void write(@RequestParam(name = "ctx") String contents) {
+    Message message = new Message();
+    message.setContents(contents);
+    repo.save(message);
   }
 
 }
