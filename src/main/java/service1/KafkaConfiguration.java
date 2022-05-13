@@ -1,16 +1,14 @@
 package service1;
 
-import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.*;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
@@ -29,19 +27,4 @@ public class KafkaConfiguration {
     return new KafkaTemplate<>(producerFactory());
   }
 
-  @Bean
-  public ConsumerFactory<String, String> jsonConsumerFactory() {
-    Map<String, Object> config = new HashMap<>();
-    config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
-    config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    return new DefaultKafkaConsumerFactory<>(config);
-  }
-
-  @Bean
-  public ConcurrentKafkaListenerContainerFactory<String, String> jsonKafkaListenerContainerFactory() {
-    ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-    factory.setConsumerFactory(jsonConsumerFactory());
-    return factory;
-  }
 }
