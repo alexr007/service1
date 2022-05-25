@@ -6,3 +6,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/se2
     username: postgres
     password: pg123456
+  jpa:
+    generate-ddl: true

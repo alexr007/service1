@@ -13,29 +13,12 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class AppController {
 
-  private final RestTemplate rest;
   private final MessageRepository repo;
-  private final KafkaTemplate<String, String> kafka;
 
   @GetMapping("/")
-  public Greeting handle(@RequestParam(name = "name", defaultValue = "Alex") String name) {
-    Greeting result = rest.getForObject(String.format("http://localhost:8082?name=%s", name), Greeting.class);
-    log.info("got: {}", result);
-    Greeting greeting = new Greeting(result.getMessage().toUpperCase());
-    log.info("modified: {}", greeting);
-    return greeting;
-  }
-
-  @GetMapping("w")
-  public void write(@RequestParam(name = "ctx") String contents) {
+  public void write(@RequestParam(name = "name") String contents) {
     Message message = new Message();
     message.setContents(contents);
     repo.save(message);
   }
-
-  @GetMapping("k")
-  public void kafka(@RequestParam(name = "k") String key, @RequestParam(name = "v") String value) {
-    kafka.send("in", key, value);
-  }
-
 }

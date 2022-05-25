@@ -1,11 +1,2 @@
 ####
 GET http://localhost:8081/?name=Jim
-
-#### to test database
-GET http://localhost:8081/w?ctx=QWE
-
-#### to kafka
-GET http://localhost:8081/k?k=123&v=Hello
-
-####
-GET http://localhost:8082/?name=Jim
